@@ -1,0 +1,13 @@
+
+.title {
+    text-shadow: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: grey;
+    font-style: italic;
+    text-align: center;
+}
+
+.product-selector {
+    width: 70%;
+    margin: auto;
+}

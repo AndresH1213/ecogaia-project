@@ -1,0 +1,101 @@
+@import url('../../../styles.css');
+
+.about_us {
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    margin: auto;
+    height: 100vh;
+    width: 100%;
+    background-image: url('https://www.yourtrainingedge.com/wp-content/uploads/2019/05/background-calm-clouds-747964.jpg');
+    background-size: 100% 100%;
+    background-repeat: repeat; 
+}
+
+.about-us_description {
+    width: 70%;
+    color: var(--color-text-secondary);
+    font-family: var(--font-titles);
+}
+
+.contact_ribbon{
+    display: grid;
+    background-color: var(--color-ribbon-bg);
+    height: 270px;
+    width: 380px;
+    justify-content: center;
+    padding: 10px;
+    position: relative;
+    border-radius: 5% 5% 0 0;
+}
+
+.contact_ribbon::after {
+    content: '';
+    transform: rotate(180deg);
+    background: linear-gradient(-44deg, var(--color-ribbon-bg) 10px, transparent 0),
+    linear-gradient(44deg, var(--color-ribbon-bg) 10px, transparent 0 );
+    background-position: left bottom;
+    background-repeat: repeat-x;
+    background-size: 29px 32px;
+    display: block;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+}
+
+.contact_ribbon h2 {
+    font-family: var(--font-titles);
+    /* color: var(--color-text-primary); */
+    color: black;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 5px;
+    margin-top: 10px;
+    text-decoration: underline;
+}
+
+.contact_ribbon i {
+    color: black;
+    font-size: 2rem
+}
+
+.contact_ribbon a {
+    text-decoration: none;
+}
+
+.contact_ribbon p {
+    color: black;
+    font-weight: 400;
+    font-size: var(--font-size-lg);
+}
+
+.localization {
+    font-style: italic;
+    font-size: 1rem !important;
+}
+
+@media only screen and (max-width: 770px) {
+    .about_us {
+        grid-template-columns: 1fr;
+    }
+
+    .about-us_description {
+        color: black;
+        align-self: flex-end;
+        font-weight: 550;
+    }
+
+    .about-us_description h2 {
+        color: rgb(90, 90, 83);
+        font-weight: bold;
+    }
+}
+

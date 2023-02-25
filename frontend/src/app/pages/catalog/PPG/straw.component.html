@@ -1,0 +1,42 @@
+<div class="container-individual animate__animated animate__fadeIn" *ngIf="product">
+    <section class="product-container">
+        <app-button-back-products></app-button-back-products>
+        
+        <app-image-carousel [arrayImgs]="catalog"></app-image-carousel>
+        
+        <app-add-cart-input *ngIf="product" [product]="product"></app-add-cart-input>
+
+        <div class="previous-page" routerLink="/product/CDD"><i class="pi pi-chevron-left"></i></div>
+    </section>
+    <section class="description-container">
+        <div class="next-page" routerLink="/product/CMT"><i class="pi pi-chevron-right"></i></div>
+        <h1>PITILLO PLEGABLE</h1>
+        <hr>
+        <h2>$25.000</h2>
+        <p>
+            Es un pitillo de silicona recubierto de acero inoxidable que se dobla e incluye su propio estuche y limpiador. Perfecto para decirle no al pitillo de plástico, no altera el sabor y es cool!
+        </p>
+        <p>
+            Lo puedes llevar en el bolsillo, en tu bolso o como llavero. Es práctico y muy útil.
+        </p>
+        <p>
+            Visita nuestro instagram y aprende cómo guardarlo en su estuche y cómo limpiarlo.
+        </p>
+        <ul>
+            <li>
+                Incluye: Pitillo, limpiador y estuche.
+            </li>
+            <li>
+                Pitillo fabricado en silicona y acero inoxidable.
+            </li>
+            <li>
+                Medidas: El estuche mide 7,5 cm de alto x 3 cm de ancho. El pitillo extendido mide 22,5 cm.
+            </li>
+        </ul>
+    </section>
+</div>
+
+<div *ngIf="!product" class="center-spinner animate__animated animate__fadeOut">
+    <img class="preloader"
+    src="assets/images/preloader-image.png"/>
+</div>

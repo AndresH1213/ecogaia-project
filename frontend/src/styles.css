@@ -1,0 +1,106 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&display=swap');
+
+
+:root {
+	/* colors */
+	--bg-first: transparent;
+	--bg-first-linear: transparent;
+	--bg-nav: #F4E5D7;
+	--bg-second: #E9E5E1;
+	--color-text-primary: #896F5A;
+	--color-text-secondary: whitesmoke;
+	--color-button: #91785A;
+	--color-button-hover: #bbb6b1;
+	--color-ribbon-bg: rgba(219, 179, 105, 0.6);
+	--page-height: calc(100vh - 12vh);
+
+	/* font */
+	--font-titles: 'Libre Baskerville', Verdana, Serif;
+	--font-size-lg: 1.5rem;
+	--font-size-md: 1rem;
+	--font-size-sm: 0.8rem;
+
+	--logo-size: 4.5rem;
+
+}
+
+/* For very Large devices */
+@media screen and (min-width: 1024px) {
+	:host {
+		/* font */
+		--font-size-lg: 2rem;
+		--font-size-md: 1.5rem;
+		--font-size-sm: 1.1rem;
+
+		--logo-size: 5rem;
+	}
+}
+
+body {
+	padding: 0px;
+	margin: 0px;
+	height: max-content;
+	box-sizing: border-box;
+	background: linear-gradient(-45deg, #fae5d3ef, #fef9e7ef, rgb(255, 252, 252), white);
+	overflow-x: hidden;
+	background-size: 400% 400%;
+	-webkit-animation: gradient 8s ease infinite;
+	animation: gradient 8s ease infinite;
+}
+
+
+/* loader spiner */
+.center-spinner {
+	position: absolute;
+	top: 45vh;
+	left: 45vw;
+}
+
+.preloader {
+	width: 100px;
+	height: 100px;
+	background-size: contain;
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg)
+	}
+}
+
+.animate__fadeIn {
+	animation-delay: .3s;
+}
+
+@-webkit-keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+
+	50% {
+		background-position: 100% 50%;
+	}
+
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+
+	50% {
+		background-position: 100% 50%;
+	}
+
+	100% {
+		background-position: 0% 50%;
+	}
+}

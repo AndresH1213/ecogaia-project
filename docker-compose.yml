@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  frontend:
+    container_name: ui-angular
+    build: ./frontend/.
+    links:
+      - backend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+  backend:
+    container_name: express-server
+    restart: always
+    build: ./backend/.
+    ports:
+      - "3000:3000"
+    command: ["npm", "run", "start:dev"]

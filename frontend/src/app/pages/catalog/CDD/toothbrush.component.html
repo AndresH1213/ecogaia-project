@@ -1,0 +1,45 @@
+<div class="container-individual animate__animated animate__fadeIn" *ngIf="product && catalog.length > 0">
+    <section class="product-container">
+        <app-button-back-products></app-button-back-products>
+
+        <app-image-carousel [arrayImgs]="catalog"></app-image-carousel>
+
+        <app-add-cart-input *ngIf="product" [product]="product"></app-add-cart-input>
+
+        <div class="previous-page" routerLink="/product/CCB"><i class="pi pi-chevron-left"></i></div>
+    </section>
+    <section class="description-container">
+        <div class="next-page" routerLink="/product/PPG"><i class="pi pi-chevron-right"></i></div>
+        <h1> {{ product.name | uppercase }}</h1>
+        <hr>
+        <h2>${{ product.price | number }}</h2>
+        <p class="description-subtitle">
+            ¿Sabías que todos los cepillos de dientes que has usado en tu vida aún existe?
+            Te presentamos una alternativa sostenible y amigable con el medio ambiente.
+        </p>
+        <ul>
+            <li>
+                <p>Mango 100% de bambú que lo hace biodegradable</p>
+            </li>
+            <li>
+                <p>Cerdas de nylon 6, reciclables, libres de BPA que te proporcionarán una buena limpieza bucal.</p>
+            </li>
+        </ul>
+        <p>
+            No sentirás el cambio debido a que el bambú no produce ningún sabor y es naturalmente es antibacteriano por
+            eso resiste la humedad haciéndolo una alternativa ideal para dejar el cepillo de plástico.
+            Se recomienda cambiarlo cada 3 meses.
+            <br /> <br />
+            Visita nuestro instagram<a href="https://www.instagram.com/ecogaia.co/" style="color: black;"
+                target="_blank">@ecogaia</a> para saber como reutilizarlo.
+            <br><br>
+            ¡Contamos con registro Sanitario Invima!
+            <br>
+            NO: INVIMA 2021DM-0023057
+        </p>
+    </section>
+</div>
+
+<div *ngIf="!product" class="center-spinner animate__animated animate__fadeOut">
+    <img class="preloader" src="assets/images/preloader-image.png" />
+</div>

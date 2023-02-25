@@ -1,0 +1,136 @@
+.input-cant-cart {
+    width: 50px
+}
+
+.cart-page-container {
+    width: 100%;
+}
+
+.cart-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.remove_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.products-cart-container {
+    margin-top: var(--font-size-md);
+}
+
+.image-empty-cart {
+    height: 20vh;
+    width: 20vh;
+}
+
+.cart_logo--mp {
+    width: fit-content;
+    position: relative;
+}
+
+.cart_logo--mp img {
+    max-width: 500px;
+    width: 80%;
+    left: 10px;
+}
+
+.characteristics-tags {
+    border: 3px lightblue solid;
+    margin: auto;
+    padding: 0 0.6rem;
+    width: max-content;
+    border-radius: 10px;
+    opacity: 90%;
+}
+
+.product-name {
+    text-align: center;
+}
+
+.cant-product {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.cant-num {
+    font-size: var(--font-size-md);
+    margin: 0;
+}
+
+.cant-btn {
+    border: none;
+    background-color: white;
+    color: var(--color-button);
+    height: 100%;
+    margin: 0px;
+}
+
+.cart-title-image,
+.cart-title-product,
+.cart-title-price,
+.cart-title-quantity,
+.cart-title-subtotal {
+    font-size: var(--font-size-md);
+    padding: 0
+}
+
+p {
+    font-size: var(--font-size-md)
+}
+
+.cho-container {
+    margin-top: 10px;
+    position: relative;
+}
+
+.order-sumary_data>p {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+@media only screen and (max-width: 500px) {
+
+    .cart-title-image,
+    .cart-img-div {
+        display: none;
+    }
+
+    .cart-title-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+        margin: -5px;
+    }
+
+    .cart-title-container div {
+        font-size: var(--font-size-sm);
+    }
+
+    .cart-info-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 0px;
+        margin: 0;
+    }
+
+    .cart-info-container button {
+        font-size: var(--font-size-sm);
+        padding: 0;
+        margin: 0
+    }
+
+    p {
+        font-size: var(--font-size-sm)
+    }
+
+    .col-3,
+    .col-2 {
+        padding: 0;
+    }
+}

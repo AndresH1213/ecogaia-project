@@ -1,0 +1,55 @@
+<section class="login-container">
+    <div class="card login-box">
+        <div class="card-body">
+            <div class="logo-img">
+                <img src="assets/images/logo.png" alt="">
+            </div>
+            <form autocomplete="off" 
+                  [formGroup]="loginForm"
+                  (ngSubmit)="login()">
+                <div class="form-control">
+                    <label for="username"><i class="pi pi-user"></i></label>
+                    <input name="username"
+                           formControlName="email"
+                           type="text" 
+                           class="input-form" 
+                           placeholder="username">
+                </div>
+                <div class="form-control">
+                    <label for="password"><i class="pi pi-unlock"></i></label>
+                    <input name="password" 
+                           type="password"
+                           formControlName="password" 
+                           class="input-form" 
+                           placeholder="password">
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <div class="checkbox checkbox-primary pull-left p-t-0">
+                            <input id="checkbox-signup" 
+                            type="checkbox"
+                            formControlName="remember"
+                            class="filled-in chk-col-light-blue">
+                            <label for="checkbox-signup"> Remember me </label>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-login"
+                        type="submit">
+                    Log in
+                </button>
+                <!-- <div class="form-group">
+                    <button class="btn btn-lg btn-goolge mt-2" 
+                            (click)="googleLogin()">Google</button>
+                </div> -->
+                <div class="form-group m-b-0">
+                    <div class="col-sm-12 text-center">
+                        Don't have an account? <a routerLink="register" class="text-primary m-l-5"><b>Sign Up</b></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <a routerLink="/" class="btn back-products"><i class="pi pi-angle-double-left
+    "></i>Regresar</a>
+</section>

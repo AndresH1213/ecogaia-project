@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="container row mt-4">
+        <div class="col-8">
+            <h2>Ordenes</h2>
+        </div>
+        <div class="col">
+            <h5 *ngIf="orders.length" class=" mt-3 float-end"><b>{{hits}} items</b></h5>
+        </div>
+    </div>
+    <div class="search-container">
+        <div class="col-12 col-sm-5">
+            <p-card>
+                <p class="search-msg">
+                    Ingresa el número de orden o tú email para buscar una orden realizada.
+                </p>
+            </p-card>
+        </div>
+    
+        <div class="col-sm-2">
+            <p-divider   layout="vertical" type="dashed" >
+            </p-divider>
+        </div>
+
+        <div class="col-12 col-sm-5 input-container">
+            <div class="p-inputgroup">
+                <input type="text" pInputText placeholder="Keyword" [(ngModel)]="queryParam">         
+                <button type="button" pButton pRipple label="Search" (click)="search()"></button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="table-responsive mt-5" *ngIf="orders.length">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center"># Orden</th>
+                    <th class="text-center">Fecha del pedido</th>
+                    <th class="text-center">Dirección del pedido</th>
+                    <th class="text-center">Precio Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders; let i = index">
+                    <td class="text-center">
+                        {{order.orderNumber || 'No'}}
+                    </td>
+                    <td class="text-center">{{ order.orderDate | date }}</td>
+                    <td class="text-center">{{ order.address }}</td>
+                    <td class="text-center">{{ order.totalPrice }}</td>
+                    <td class="text-center">
+                        <button *ngIf="order.products.length > 1" (click)="seeProducts(i)" class="btn">
+                            {{ showMore ? 'Ver menos...' : 'Ver productos...' }}
+                        </button>
+                        <span *ngIf="showMore && i === showMoreOrder">
+                            <div *ngFor="let item of prodsToShow">
+                                {{ item.product }} ({{ item.quantity}})
+                            </div>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- <div>
+        <p-card class="row">
+            <div class="row">
+                <div class="col-3"># Email </div>
+                <div class="col-3"><b>Productos</b></div>
+                <div class="col-2"><b>Subtotal</b></div>
+                <div class="col-2"><b>Dirección</b></div>
+                <div class="col-2"><b>Fecha</b></div>
+            </div>
+        </p-card>                
+        <p-card class="row mt-1 mb-2" *ngFor="let item of [1,2,3]">
+            <div class="row">
+                <div class="col-3">
+                    <img src="./assets/images/cup1.webp" class=cart-img alt="">
+                </div>
+                <div class="col-3">Combo 1</div>
+                <div class="col-2">$ 50.000</div>
+                <div class="col-2">
+                    1
+                </div>
+                <div class="col-2">Subtotal</div>
+            </div>
+        </p-card>
+    </div> -->
+
+</div>

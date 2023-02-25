@@ -1,0 +1,107 @@
+    
+.product-properties {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    place-content: center;
+    align-items: center;
+    place-items: center;
+    /* grid-template-rows: repeat(2, 1fr); */
+}
+
+.characteristic-product-container {
+    display: flex;
+    grid-column: 1/3;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.characteristic-product-input {
+    width: 70%;
+    border-radius: 3px;
+    align-self: center;   
+    margin-left: 5px; 
+}
+
+.characteristic-select {
+    height: 100%;
+    background-color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: var(--color-text-primary);
+    border: none;
+    width: 100%;
+}
+.input-cant {
+    display: flex;
+    grid-column: 1/2;
+}
+
+.cant-btn {
+    border: none;
+    background-color: white;
+    color: var(--color-button);
+    height: 100%;
+    margin: 0px;
+}
+
+.combo-product-name {
+    font-size: var(--font-size-md);
+    justify-self: center;
+    align-self: center;
+    grid-column: 1/3;
+}
+
+.input {
+    width: 90%;
+    height: 100%;
+    border: none;
+}
+
+
+.input-color::after {
+    content: ' ';
+    width: 5px;
+    height: 5px;
+    display: inline-block;
+    background-color: tomato;
+    border-radius: 50%;
+}
+
+
+.input-cant .input {
+    text-align: center;
+    color: var(--color-button);
+    font-size: var(--font-size-lg);
+}
+
+.input-label {
+    background-color: var(--color-button);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    box-sizing: border-box;
+    width: 100%;
+}
+.btn-cart {
+    background-color: var(--color-button);
+    border: none;
+    color: white;
+    height: 100%;
+    border-radius:2px;
+    font-size: var(--font-size-md);
+    font-family: var(--font-titles);
+    width: 90%;
+}
+.btn-cart:hover {
+    background-color: rgb(102, 92, 81);
+}
+.btn-cart > i {
+    font-size: var(--font-size-lg);
+}

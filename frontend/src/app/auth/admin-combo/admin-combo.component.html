@@ -1,0 +1,80 @@
+<p-card>
+    <div class="header-combos" *ngIf="!deleting">
+        <h3>Armar el combo</h3>
+        <button type="button" class="btn btn-danger" (click)="deleteMode()">
+            Eliminar Combo
+        </button>
+    </div>
+    <div class="header-combos" *ngIf="deleting">
+        <h3>Eliminar un Combo</h3>
+        <button type="button" class="btn btn-primary" (click)="deleteMode()">
+            Armar un combo
+        </button>
+    </div>
+
+    <hr>
+    <form *ngIf="!deleting">
+
+        <div class="form-control mb-2 mt-1 p-inputgroup">
+            <span class="p-inputgroup-addon">Combo title</span>
+            <input type="text" [(ngModel)]="title" name='title'>
+        </div>
+
+        <div class="form-control">
+            <p-dropdown [options]="products" 
+                        [(ngModel)]="addCombo" 
+                        optionLabel="name"
+                        name="newItem"
+                        placeholder="Products to add"
+            ></p-dropdown>
+            <button type="button" 
+                    class="btn btn-light ms-1 mb-1"
+                    (click)="pushCombo()"><i class="pi pi-plus-circle"></i></button>
+        </div>
+    
+        <div class="card mt-3">
+            <h4 class="ms-2" *ngFor="let comboProd of newCombo">{{ comboProd.name }}
+                <button type="button" class="btn btn-light" (click)="removeProd(comboProd._id!)">
+                    <i class="pi pi-minus-circle"></i>
+                </button>
+            </h4>
+        </div>
+    
+        <div class="p-col-12 p-md-4">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">$</span>
+                <input  type="number" 
+                        placeholder="Price" 
+                        name="price" 
+                        [(ngModel)]="price">
+            </div>
+        </div>
+    
+        <div class="p-col-12 p-md-4">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">Image</span>
+                <input  type="file"
+                        style="width: 300px;" 
+                        class="form-control file-input mt-1 ms-1"  
+                        (change)="onImageChange($event.target)">            
+            </div>
+        </div>
+    
+        <p-button class="ms-4" icon="pi pi-save" label="Guardar Combo" (click)="saveCombo()"></p-button>
+    </form>
+    <form *ngIf="deleting">
+        <div class="form-control">
+            <p-dropdown [options]="combos" 
+                        [(ngModel)]="comboRemoveId" 
+                        optionLabel="title"
+                        name="title"
+                        placeholder="Combo to Remove"
+            ></p-dropdown>
+        </div>
+        <button type="button" 
+                    class="btn btn-danger ms-1 mt-3"
+                    (click)="removeCombo()">
+                    Eliminar el Combo
+        </button>
+    </form>
+</p-card>

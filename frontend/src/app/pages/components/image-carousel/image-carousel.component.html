@@ -1,0 +1,14 @@
+<p-carousel [value]="catalog" 
+            orientation="vertical" 
+            [numScroll]="1"
+            [showIndicators]="false" 
+            [circular]="true" 
+            verticalViewPortHeight="350px">
+
+    <ng-template let-img pTemplate="img">
+        <div>
+            <img class="image" [src]="img" alt="cepillo de cabello de bambu">
+        </div>
+    </ng-template>
+
+</p-carousel>

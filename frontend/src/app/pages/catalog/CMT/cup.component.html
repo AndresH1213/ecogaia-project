@@ -1,0 +1,92 @@
+<div class="container-individual animate__animated animate__fadeIn" *ngIf="product">
+    <section class="product-container">
+        <app-button-back-products></app-button-back-products>
+        <app-image-carousel [arrayImgs]="catalog"></app-image-carousel>
+        <form class="product-properties form-group">
+            <app-add-cart-input *ngIf="product" [product]="product"></app-add-cart-input>
+        </form>
+        <div class="previous-page" routerLink="/product/PPG"><i class="pi pi-chevron-left"></i></div>
+    </section>
+    <section class="description-container description-cup" (scroll)="scrolldown()">
+        <div class="next-page" routerLink="/product/CCB"><i class="pi pi-chevron-right"></i></div>
+        <h1> {{ product.name | uppercase}}</h1>
+        <hr>
+        <h2>${{ product.price | number }}</h2>
+        <p class="description-subtitle">
+            Ama tus días
+        </p>
+        <p style="text-align: left;">
+            Con la copa menstrual puedes practicar deporte, salir, dormir, puedes ir al baño con ella sin necesidad
+            de quitártela, puedes llevarla puesta hasta doce horas seguidas, realizando todas las actividades que
+            regularmente haces.
+        </p>
+        <br>
+        <ul>
+            <li>
+                Es reutilizable por muchos ciclos ya que tiene una vida útil de hasta 10 años
+            </li>
+            <li>
+                100% Hipoalergénica y bio-compatible
+            </li>
+            <li>
+                No absorbe, por ende no reseca, no deja fibras y no genera cambios en el pH.
+            </li>
+            <li>
+                Protección por hasta 12 horas seguidas (varía según la abundancia de flujo de cada quien)
+            </li>
+            <li>
+                Fabricada en silicona grado médico Clase VI de la más alta calidad
+            </li>
+            <li>
+                Libre de látex, plástico, BPA y químicos
+            </li>
+            <li>
+                Certificados: FDA Registered, ISO 13485, ISO 9001, RoHS (puedes consultar los certificados aquí).
+            </li>
+        </ul>
+
+        <div *ngIf="scrollIcon" class="scroll-down">
+            <i class="uil uil-mouse-alt"></i>
+            <span class="scroll-name">Desliza hacia abajo</span>
+            <i class="uil uil-arrow-down"></i>
+        </div>
+
+        <div class="talla-desc">
+            <h2>TALLA 1</h2>
+            <p>Ideal para quienes:</p>
+            <ul>
+                <li>No han tenido partos vaginales</li>
+                <li>Son menores de 30 años</li>
+                <li>Su estatura es max. 1.65m</li>
+                <li>Su talla de pantalón es max. 8</li>
+                <li>Han usado tampón mini o regular</li>
+            </ul>
+        </div>
+
+        <div class="talla-desc">
+            <h2>TALLA 2</h2>
+            <p>Ideal para quienes:</p>
+            <ul>
+                <li>Ya han tenido partos vaginales</li>
+                <li>Son mayores de 30 años (así no hayan tenido hijos)</li>
+                <li>Su estatura es superior a 1.65m</li>
+                <li>Su talla de pantalón superior a 8</li>
+                <li>Han usado tampón súper</li>
+            </ul>
+        </div>
+
+        <p><b>Incluye: Copa menstrual, bolsa en tela y manual de uso.</b>
+            <br>
+            Fabricada por: Casco Bay Molding
+            <br>
+            Visita nuestro <a href="https://www.instagram.com/ecogaia.co/" style="color: rgb(45, 36, 36);"
+                target="_blank"><i class="uil uil-instagram"></i>Instagram</a> para darte tips sobre cómo ponértela y
+            cómo limpiarla y
+            esterilizarla.
+        </p>
+    </section>
+</div>
+
+<div *ngIf="!product" class="center-spinner animate__animated animate__fadeOut">
+    <img class="preloader" src="assets/images/preloader-image.png" />
+</div>

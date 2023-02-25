@@ -1,0 +1,56 @@
+<p-dialog header="producto añadido al carrito" [(visible)]="displayAddCart" [style]="{width: '20vw'}" [closable]="false">
+
+</p-dialog>
+<form class="product-properties form-group" [ngStyle]="{'grid-template-rows': styleGridRows}">
+
+    <h5 *ngIf="!displayCart && characteristicProperties.length > 0" class="combo-product-name">{{ product.name}}</h5>
+    <div *ngFor="let propertyName of characteristicProperties" class="characteristic-product-container">
+
+        <label [for]="propertyName" class="input-label characteristic-product-input">{{ propertyName | titlecase }}</label>
+        <select class="characteristic-select characteristic-product-input"
+                [(ngModel)]="valuesProperties[propertyName]"
+                (ngModelChange)="changeValueProp(propertyName,$event)"
+                name="propertyName">
+            <option value="">Selecccione {{ propertyName | lowercase }}...</option>
+            <option *ngFor="let type of productCharacteristics[propertyName]"
+                    [value]="type"
+                    class="input-property"
+                    >{{ type }}</option>
+        </select>
+        
+    </div>
+
+    <div class="input-cant" *ngIf="displayCart">
+        <span class="input-group-btn">
+            <button (click)="changeValue(-1)"
+                    class="cant-btn"
+                    type="button">
+                <i class="pi pi-minus"></i>
+            </button>
+        </span>
+        <input type="number" 
+               class="form-control input"
+               placeholder="1"
+               [(ngModel)]="selectedData.cant"
+               name="cant"
+               (ngModelChange)="validCantValue($event)"
+               [formControl]="rangeCantControl"
+               max=20
+               min=1>
+    
+        <span class="input-group-btn">
+            <button (click)="changeValue(1)"
+                    class="cant-btn"
+                    type="button">
+                <i class="pi pi-plus"></i>
+            </button>
+        </span>
+    </div>
+    <button type="button" 
+            class="btn-cart" 
+            (click)="addCart()"
+            *ngIf="displayCart">
+        Añadir
+        <i class="uil uil-shopping-cart-alt"></i>
+    </button>
+</form>

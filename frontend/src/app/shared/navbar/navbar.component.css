@@ -1,0 +1,85 @@
+@import url("../../../styles.css");
+
+.navbar {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    height: 90px;
+    width: 95vw;
+    background-color: var(--bg-nav);
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    z-index: 999;
+}
+
+.filler {
+    height: calc(90px + 25px);
+}
+
+.navbar-title h1 {
+    font-family: var(--font-titles);
+    font-size: 2.5em;
+    letter-spacing: 5px;
+    color: var(--color-text-primary);
+    font-weight: bold;
+    margin: 0px;
+}
+
+.navbar-title p {
+    color: var(--color-text-primary);
+    font-family: var(--font-titles);
+    font-style: italic;
+    margin: 0px;
+    text-align: center;
+}
+
+.navbar-title hr {
+    margin: 0px;
+    border: 2px solid var(--color-text-primary);
+    width: 120%;
+    transform: translateX(-10%);
+}
+
+.navbar-button {
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    background-color: var(--bg-nav);
+    color: var(--color-button);
+    border: none;
+    font-size: 1.5rem;
+}
+
+.navbar-button:hover {
+    background-color: var(--color-button);
+    color: var(--color-text-secondary);
+}
+
+.navbar-button:focus {
+    box-shadow: 0 0 1px 0.15rem var(--color-text-primary);
+}
+
+.navbar-logo {
+    height: var(--logo-size);
+}
+
+.button-cart:hover {
+    background-color: var(--bg-nav);
+    color: var(--color-text-primary);
+    opacity: 60%;
+    transform: translateY(-5%);
+}
+
+.menu {
+    z-index: 111;
+}
+
+@media only screen and (max-width: 670px) {
+    .navbar-title {
+        display: none;
+    }
+}

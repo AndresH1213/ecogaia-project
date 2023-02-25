@@ -1,0 +1,6 @@
+<div class="container">
+    <h1 class="title-success">El proceso de pago ha finalizado...</h1>
+    <img class="image-status" *ngIf="status !== 'approved'" src="assets/images/logo-failure.svg" alt="logo error pago">
+    <img class="image-status" *ngIf="status === 'approved'" src="assets/images/logo-success.svg" alt="logo compra exitosa">
+    <h2>Serás redireccionado a la página principal en {{counter}} segundos...</h2>
+</div>

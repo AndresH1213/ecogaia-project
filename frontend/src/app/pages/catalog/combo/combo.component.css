@@ -1,0 +1,19 @@
+.combo-image {
+    width: 65%;
+    height:65%;
+    border-radius: 50%;
+}
+
+.characteristics-container {
+    display: flex;
+    flex-direction: column;
+    height: 40vh;
+    width: 45vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.characteristic-data {
+    width: 70%;
+    margin-bottom: 10px ;
+}

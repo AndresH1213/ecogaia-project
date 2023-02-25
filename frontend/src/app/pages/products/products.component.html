@@ -1,0 +1,29 @@
+<div class="container" *ngIf="products.length >= 0">
+    <app-combos-link></app-combos-link>
+    <div class="row container-box">
+        <div class="col-lg-3 col-sm-6 columns-description" *ngFor="let product of products">
+            <div class="space-image"></div>
+            <div class="description-box">
+                <div class="description-img"
+                     [ngStyle]="{
+                        'background': 'url(' + product.oneImage + ')',
+                        'background-repeat': 'no-repeat',
+                        'background-size': 'cover'
+                     }"></div>
+                <div class="description-content">
+                    <h2>{{ product.name }}</h2>
+                    <p>${{product.price | number}}</p>
+                    <div class="description-buttons">
+                        <button class="btn" routerLink='/product/{{product.code}}'><i class="pi pi-plus-circle"></i></button>
+                        <button class="btn" routerLink="/cart"><i class="pi pi-shopping-cart"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="products.length === 0" class="center-spinner animate__animated animate__fadeOut">
+    <img class="preloader"
+    src="assets/images/preloader-image.png"/>
+</div>

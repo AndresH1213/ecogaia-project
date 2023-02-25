@@ -1,0 +1,155 @@
+<app-navbar></app-navbar>
+
+<div class="container cart-page-container">
+
+    <div class="row">
+        <div class="col-lg-8 col-md-12">
+            <div class="container row mt-4">
+                <div class="col-8">
+                    <h2>Carrito de compras</h2>
+                </div>
+            </div>
+
+            <div class="products-cart-container" *ngIf="cart">
+                <p-card class="row">
+                    <div class="row cart-title-container">
+                        <div class="col-3 cart-title-image"></div>
+                        <div class="col-3 cart-title-product"><b>Producto</b></div>
+                        <div class="col-2 cart-title-price"><b>Precio</b></div>
+                        <div class="col-2 cart-title-quantity text-center"><b>Cantidad</b></div>
+                        <div class="col-2 cart-title-subtotal text-center"><b>Subtotal</b></div>
+                    </div>
+                </p-card>
+                <p-card class="row mt-1 mb-2" *ngFor="let product of cart.products; let i = index">
+                    <div class="row cart-info-container">
+                        <div class="col-1 remove_container">
+                            <button type="button" class="btn btn-light" (click)="removeItem(i)">
+                                <i class="uil uil-trash-alt"></i>
+                            </button>
+                        </div>
+                        <div class="col-2 col-sm-0 cart-img-div">
+                            <img [src]="products[i].oneImage" class=cart-img [alt]="product.item.name">
+                        </div>
+                        <div class="col-3">
+                            <p class="product-name">
+                                {{ product.item.name }}
+                            </p>
+                            <p *ngIf="product.characteristics && !product.combo" class="characteristics-tags">
+                                {{ characteristicTags[i] | titlecase }}
+                            </p>
+                        </div>
+                        <div class="col-2">
+                            <p>
+                                $ {{product.item.price | number}}
+                            </p>
+                        </div>
+                        <div class="col-2 m">
+                            <div class="cant-product">
+                                <button (click)="changeCantProduct(i, -1)" class="cant-btn" type="button">
+                                    <i class="pi pi-minus"></i>
+                                </button>
+
+                                <p class="cant-num">{{ product.cant }}</p>
+
+                                <button (click)="changeCantProduct(i, 1)" class="cant-btn" type="button">
+                                    <i class="pi pi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-2 text-center">
+                            <p>
+                                $ {{ product.item.price * product.cant | number}}
+                            </p>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+
+            <div class="cart_logo--mp">
+                <img src="assets/images/mercadopago.png" alt="">
+            </div>
+
+        </div>
+
+        <div *ngIf="!cart">
+            <h1> No tienes ningún producto en el carrito aún</h1>
+            <img class="image-empty-cart"
+                src="https://img.icons8.com/external-bearicons-outline-color-bearicons/64/000000/external-empty-cart-essential-collection-bearicons-outline-color-bearicons.png" />
+        </div>
+
+        <div class="col-lg-4 col-md-8 col-sm-12" *ngIf="theresCart">
+
+            <div class="container mt-4 ms-3 order-sumary">
+
+                <h4>Resumen del pedido</h4>
+                <hr>
+                <div class="order-sumary_data row">
+                    <p class="col-6"><span style="font-weight: bold;">Items</span> ({{ products.length }})</p>
+                    <p class="col-6"><span style="font-weight: bold;">Total:</span> ${{( theresCart ? cart!.totalValue :
+                        0 ) |
+                        number }}</p>
+                </div>
+                <div class="order-shipping">
+                    <form [formGroup]="orderForm">
+                        <div class="row mb-2">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control mb-2" formControlName="email">
+                        </div>
+                        <div class="row mb-2">
+                            <label for="phoneNumber">Celular</label>
+                            <input type="tel" id="phoneNumber" class="form-control mb-2" formControlName="phoneNumber">
+                            <p> <b>Solo envios nacionales a Colombia**</b> </p>
+                        </div>
+                        <div class="row mb-2">
+                            <label class="form-label">Departamento</label>
+                            <select class="form-control" formControlName="state">
+                                <option value="">-- Seleccione Departamento -- </option>
+                                <option *ngFor="let state of states" [value]="state"> {{state}} </option>
+                            </select>
+                        </div>
+
+                        <div class="row mb-2" *ngIf="cities.length > 0">
+                            <label class="form-label">Municipio: </label>
+                            <select class="form-control" formControlName="city">
+                                <option value="">-- Seleccione Municipio -- </option>
+                                <option *ngFor="let city of cities" [value]="city"> {{ city }} </option>
+                            </select>
+                        </div>
+
+                        <div class="row mb-2">
+                            <label class="form-label">Codigo Postal (ZIP):
+                                <a href="http://visor.codigopostal.gov.co/472/visor/" target="_blank">
+                                    <i class="pi pi-search-plus float-end" pTooltip="Buscar el codigo postal"
+                                        tooltipPosition="top"></i>
+                                </a>
+                            </label>
+                            <input type="text" class="form-control" formControlName="zip">
+                        </div>
+
+                        <div class="row mb-2">
+                            <label class="form-label">Dirección: </label>
+                            <input type="text" class="form-control" formControlName="address">
+                        </div>
+
+                        <div class="row">
+                            <label class="form-label">Información adicional (Casa, apto, etc): </label>
+                            <input type="text" class="form-control" formControlName="addressExtra">
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary mt-3 float-end" type="button" (click)="confirm()">
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+</script>

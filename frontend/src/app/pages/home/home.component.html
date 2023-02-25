@@ -1,0 +1,29 @@
+<div class="container-home animate__animated animate__fadeIn" *ngIf="images.length > 0">
+    <br>
+    <h1>¡Bienvenidos!</h1>
+    <p>A un consumo consciente, sostenible y responsable. Dale click a cualquiera de nuestros productos para que puedas
+        tener información más detallada de cada uno de ellos. Síguenos en nuestro
+        <a href="https://www.instagram.com/ecogaia.co/" target="_blank"><i class="uil uil-instagram"></i>Instagram</a>
+    </p>
+    <hr>
+    <div class="img-container">
+
+        <div *ngFor="let image of images">
+            <app-image-window class="image-home" [imageUrl]=image.path
+                [routerLink]="image.productUrl"></app-image-window>
+            <i class="pi pi-spin pi-spinner" *ngIf="!image.path" style="font-size: 2rem"></i>
+            <p class="text-center">{{ image.name }}</p>
+        </div>
+
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-3 container-button">
+            <button class="btn" routerLink="/products">ECO TIENDA <i class="uil uil-arrow-circle-right"></i></button>
+        </div>
+    </div>
+    <app-combos-link></app-combos-link>
+</div>
+
+<div *ngIf="images.length === 0" class="center-spinner animate__animated animate__fadeOut">
+    <img class="preloader" src="assets/images/preloader-image.png" />
+</div>

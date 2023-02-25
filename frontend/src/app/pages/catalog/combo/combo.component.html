@@ -1,0 +1,64 @@
+<div class="container-individual animate__animated animate__fadeIn" *ngIf="actualCombo">
+    <section class="product-container">
+        <app-button-back-products></app-button-back-products>
+       <img [src]="actualCombo.oneImage" class="combo-image" [alt]="actualCombo.name"> 
+        <form class="product-properties form-group">
+            <div class="input-cant">
+                <span class="input-group-btn">
+                    <button (click)="changeValue(-1)"
+                            class="cant-btn"
+                            type="button">
+                        <i class="pi pi-minus"></i>
+                    </button>
+                </span>
+                <input type="number" 
+                       class="form-control input"
+                       placeholder="1"
+                       [(ngModel)]="selectedData.cant"
+                       name="cant"
+                       (ngModelChange)="validCantValue($event)"
+                       max=20
+                       min=1>
+            
+                <span class="input-group-btn">
+                    <button (click)="changeValue(1)"
+                            class="cant-btn"
+                            type="button">
+                        <i class="pi pi-plus"></i>
+                    </button>
+                </span>
+            </div>
+            <button type="button" 
+                    class="btn-cart" 
+                    (click)="addCart()">
+                Añadir
+                <i class="uil uil-shopping-cart-alt"></i>
+            </button>
+        </form>
+        <div class="previous-page" [routerLink]="previuosPage" (click)="reload()"><i class="pi pi-chevron-left"></i></div>
+    </section>
+    <section class="description-container description-cup">
+        <div class="next-page" [routerLink]="nextPage" (click)="reload()"><i class="pi pi-chevron-right"></i></div>
+        <h1> {{ actualCombo.name | uppercase}}</h1>
+        <hr>
+        <h2>${{ actualCombo.price | number }}</h2>
+        <br><br><br>
+        <h3 *ngFor="let product of actualCombo.products">
+            + {{ product.name }}
+        </h3>
+        <div *ngIf="products.length > 0" class="characteristics-container">
+            <div *ngFor="let product of products" class="characteristic-data">
+                <app-add-cart-input 
+                        (OutputValue)="characteristicsProducts[product.name] = $event" 
+                        [product]="product" [displayCart]="false" class="mt-2">
+                </app-add-cart-input>
+            </div> 
+        </div>
+
+    </section>
+</div>
+
+<div *ngIf="!combos" class="center-spinner animate__animated animate__fadeOut">
+    <img class="preloader"
+    src="assets/images/preloader-image.png"/>
+</div>
