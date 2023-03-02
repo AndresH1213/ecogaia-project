@@ -1,39 +1,39 @@
-const Combo = require("../models/Combo");
+const Combo = require('../models/Combo');
 const asyncWrapper = require('../middlewares/async');
 
-exports.singleCombo = asyncWrapper( async (req, res = response ) => {
-  let { title, comboId } = req.query;
-  const queryObject = {}
+exports.singleCombo = asyncWrapper(async (req, res = response) => {
+  let { title, comboId, pageUrl } = req.query;
+  const queryObject = {};
   if (title) {
-    title = title.replace('+',' ')
-    queryObject.title = title
+    title = title.replace('+', ' ');
+    queryObject.title = title;
+  } else if (pageUrl) {
+    queryObject.pageUrl = pageUrl;
   }
   if (comboId) {
-    queryObject._id = comboId
+    queryObject._id = comboId;
   }
-  const combo = await Combo.findOne(queryObject).populate(
-    "products",
-    "name"
-  );
+
+  const combo = await Combo.findOne(queryObject).populate('products', 'name');
   if (!combo) {
     return res.status(404).json({
       ok: false,
-      msg: "No combo found with that title",
+      msg: 'No combo found with that title',
     });
   }
   res.json({
     ok: true,
-    combo
-  })
-})
+    combo,
+  });
+});
 
 exports.getCombos = async (req, res = response) => {
-  const combos = await Combo.find({ availability: true })
+  const combos = await Combo.find({ availability: true });
 
   if (combos.length < 1) {
     return res.status(404).json({
       ok: false,
-      msg: "Any available combos found",
+      msg: 'Any available combos found',
     });
   }
   res.json({
@@ -42,38 +42,37 @@ exports.getCombos = async (req, res = response) => {
   });
 };
 
-exports.setCombos = (req, res = response, next) => {
-  const {title, price } = req.body;
-  let products = req.body.products
-  if (!req.files) {
+exports.setCombos = async (req, res = response, next) => {
+  const { title, price, image } = req.body;
+  let products = req.body.products;
+  if (!image) {
     return res.status(400).json({
       ok: false,
-      msg: "Image missing",
+      msg: 'Image missing',
     });
   }
   if (!Array.isArray(products)) {
-    products = products.split(',')
+    products = products.split(',');
   }
-  Combo.create({
+  const pageUrl = title.toLowerCase().replace(/ /g, '-');
+
+  const combo = await Combo.create({
     title,
     products,
     price,
-    image: "no image yet",
-  })
-    .then((result) => {
-        req.result = result;
+    pageUrl,
+    image,
+  });
 
-        next()
-    })
-    .catch((err) => {
-      console.log(err);
-      next(err)
-    });
+  res.json({
+    ok: true,
+    combo,
+  });
 };
 
 exports.removeCombo = (req, res = response) => {
   const comboId = req.params.id;
-  Combo.findOneAndUpdate({ _id: comboId }, { availability: false})
+  Combo.findOneAndUpdate({ _id: comboId }, { availability: false })
     .then((result) => {
       return res.json({
         ok: true,
@@ -84,7 +83,7 @@ exports.removeCombo = (req, res = response) => {
       console.log(err);
       res.status(500).json({
         ok: false,
-        msg: "Error removing combo",
+        msg: 'Error removing combo',
       });
     });
 };
