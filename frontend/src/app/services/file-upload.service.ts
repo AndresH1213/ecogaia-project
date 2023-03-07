@@ -1,3 +1,9 @@
+import {
+  HttpHeaders,
+  HttpParams,
+  HttpClient,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
@@ -7,41 +13,42 @@ const baseUrl = environment.baseUrl;
   providedIn: 'root',
 })
 export class FileUploadService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  async updatePhoto(
-    file: File,
-    type: 'product' | 'combo',
-    id: string,
-    updateCoverImage: boolean = false
-  ) {
-    try {
-      const url = `${baseUrl}/products/image/${type}/${id}`;
-      const formData = new FormData();
-      formData.append('image', file);
-      if (updateCoverImage) {
-        formData.append('forUpdate', 'true');
-      }
+  getAuthHeaders() {
+    return {
+      'x-token': localStorage.getItem('tokenEGS') || '',
+    };
+  }
 
-      const resp = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'x-token': localStorage.getItem('tokenEGS') || '',
-        },
-        body: formData,
-      });
+  getPresignedUrls(image: any) {
+    const authHeader = this.getAuthHeaders() || {
+      'x-token': 'unauthenticated',
+    };
+    const [authKey, authValue] = Object.entries(authHeader)[0];
 
-      const data = await resp.json();
+    const headers = new HttpHeaders()
+      .set('Accept', 'application/json')
+      .set(authKey, authValue);
+    const params = new HttpParams()
+      .set('name', image.name)
+      .set('mime', image.type);
+    const url = `${baseUrl}/products/image/presigned-url`;
+    return this.http.get(url, { params, headers });
+  }
 
-      if (data.ok) {
-        return data.filename;
-      } else {
-        console.log(data.msg);
-        return false;
-      }
-    } catch (err) {
-      console.log(err);
-      return false;
-    }
+  uploadfileAWSS3(fileUploadUrl: string, contentType: string, file: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': contentType,
+    });
+    const req = new HttpRequest('PUT', fileUploadUrl, file, {
+      headers,
+    });
+    return this.http.request(req);
+  }
+
+  deleteFileAWSS3(name: string) {
+    const url = `${baseUrl}/products/image/${name}`;
+    return this.http.delete(url, { headers: this.getAuthHeaders() });
   }
 }
