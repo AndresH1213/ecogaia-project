@@ -16,7 +16,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./catalog/catalog.module').then((m) => m.CatalogModule),
   },
-  { path: 'combo/:title', component: ComboComponent },
+  { path: 'combo/:pageUrl', component: ComboComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'payment-process', component: PaymentProcessComponent },
