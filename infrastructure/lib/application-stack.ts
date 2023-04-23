@@ -16,6 +16,7 @@ export class ApplicationStack extends Stack {
     const vpc = new Vpc(this, 'ClusterVpc', {
       maxAzs: 2,
       cidr: '10.0.0.0/16',
+      natGateways: 1,
     });
 
     const cluster = new Cluster(this, 'ClusterApp', {
