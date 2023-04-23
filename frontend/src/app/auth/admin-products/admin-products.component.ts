@@ -5,6 +5,8 @@ import Swal from 'sweetalert2';
 import { ProductsService } from '../../services/products.service';
 import { FileUploadService } from '../../services/file-upload.service';
 import { AdminService } from '../../services/admin.service';
+import { filter, concatMap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-admin-products',
@@ -20,16 +22,16 @@ export class AdminProductsComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(3)]],
     code: ['', [Validators.required, Validators.minLength(3)]],
     price: ['', [Validators.required, Validators.min(1)]],
-    image: [null],
+    imageUrl: [''],
     characteristicName: [''],
     characteristicValue: [''],
   });
+  public image: any;
 
   public characteristic: any = {};
   public characteristicKeys: string[] = [];
   public showCharacteristics: boolean = false;
 
-  public inputFileImage: boolean = false;
   public inputImageStateText = 'Subir';
   public tooltipImageStateText = 'Subir imagen desde PC';
 
@@ -92,7 +94,7 @@ export class AdminProductsComponent implements OnInit {
         name,
         code,
         price,
-        image: imageUrl![0] || 'no-image',
+        imageUrl: imageUrl![0] || 'no-image',
         characteristicName: characteristicKey,
         characteristicValue: characteristicValue,
       });
@@ -140,44 +142,15 @@ export class AdminProductsComponent implements OnInit {
     this.characteristicKeys = Object.keys(this.characteristic);
   }
 
-  createProduct() {
-    const productData = this.productForm.value;
-    // if theres a characteristic in the characteristicObject add to the productData
-    // this because in the produc form we store only charcName and charcValue
-    if (this.characteristic) {
-      productData.characteristics = JSON.stringify(this.characteristic);
-    }
-    this.productService.addProduct(productData).subscribe(
-      (resp: any) => {
-        if (resp.ok) {
-          Swal.fire(
-            'New product added!',
-            `New Product ${productData.name}`,
-            'success'
-          );
-
-          this.productForm.reset();
-          this.characteristic = {};
-          this.characteristicKeys = [];
-          this.loadProducts();
-        } else {
-          Swal.fire('Opps', 'A error ocurrs', 'error');
-        }
-      },
-      (err) => {
-        Swal.fire('err', err.error.msg, 'error');
-      }
-    );
-  }
-
-  edit() {
+  edit(replaceImage = false) {
     const prodId = this.selectedProductID;
-    const { name, price, image } = this.productForm.value;
+    const { name, price, imageUrl } = this.productForm.value;
 
     let data: any = {
       name,
       price,
-      image,
+      imageUrl,
+      replaceImage,
     };
 
     if (this.characteristic) {
@@ -216,60 +189,106 @@ export class AdminProductsComponent implements OnInit {
     });
   }
 
-  showIputFileImage() {
-    this.inputFileImage = this.inputFileImage ? false : true;
-    this.inputImageStateText =
-      this.inputImageStateText === 'URL' ? 'Subir' : 'URL';
-    this.tooltipImageStateText =
-      this.inputImageStateText === 'URL'
-        ? 'Asignar imagen por URL'
-        : 'Subir imagen desde PC';
-
-    // reset the previuos input value
-    this.productForm.get('image')?.reset();
-  }
-
   onImageChange(target: any) {
-    const [file] = target.files;
-    if (file) {
-      this.productForm.patchValue({ image: file });
-    }
+    if (!target.files) return;
+    const file = (target.files as FileList)[0];
+    this.image = file;
   }
 
-  uploadFileImage(toUpdate: boolean) {
-    const file = this.productForm.get('image')?.value;
-    if (!file) {
+  uploadFileImage() {
+    if (!this.image) {
       Swal.fire('No file', 'No has subido ningún archivo todavía', 'warning');
       return;
     }
-    // to update replace the first image (cover image)
-    if (toUpdate) {
-      this.uploadFile
-        .updatePhoto(file, 'product', this.selectedProductID, true)
-        .then((resp) => {
-          Swal.fire(
-            'Success',
-            `imagen con el nombre ${resp} agregada`,
-            'success'
-          );
-        })
-        .catch((err) =>
-          Swal.fire('Ups', `Ocurrio el siguiente error: ${err} `, 'error')
-        );
-      return;
-    }
-    this.uploadFile
-      .updatePhoto(file, 'product', this.selectedProductID)
-      .then((resp) => {
-        Swal.fire(
-          'Success',
-          `imagen con el nombre ${resp} agregada`,
-          'success'
+
+    const uploadfileSource = this.uploadFile.getPresignedUrls(this.image).pipe(
+      filter((resp: any) => resp.ok),
+      concatMap(({ signedUrl }: any) => {
+        return this.uploadFile.uploadfileAWSS3(
+          signedUrl,
+          this.image.type,
+          this.image
         );
       })
-      .catch((err) =>
-        Swal.fire('Ups', `Ocurrio el siguiente error: ${err} `, 'error')
+    );
+    return uploadfileSource;
+  }
+
+  addFileImage(replaceImage = false) {
+    this.uploadFileImage()
+      ?.pipe(filter((resp: any) => resp.status === 200))
+      .subscribe(
+        (resp: any) => {
+          console.log({ resp });
+          const imageUrl = resp.url.split('?')[0];
+          this.productForm.setValue({ ...this.productForm.value, imageUrl });
+          this.edit(replaceImage);
+        },
+        (err) => {
+          if (err) {
+            Swal.fire('Fail upload', 'Error subiendo la imagen', 'error');
+            return;
+          }
+        }
       );
+  }
+
+  createProduct() {
+    const productData = this.productForm.value;
+    // if theres a characteristic in the characteristicObject add to the productData
+    // this because in the produc form we store only charcName and charcValue
+    if (this.characteristic) {
+      productData.characteristics = JSON.stringify(this.characteristic);
+    }
+
+    try {
+      const image_source = this.uploadFileImage();
+
+      if (image_source) {
+        image_source
+          .pipe(
+            filter((resp: any) => resp.status === 200),
+            concatMap((resp: any) => {
+              const imageUrl = resp.url.split('?')[0];
+              const body = {
+                ...productData,
+                imageUrl,
+              };
+
+              return this.productService.addProduct(body);
+            }),
+            catchError((err) => {
+              Swal.fire('Opps', 'No se pudo crear el producto', 'error');
+              return of('Producto no creado');
+            })
+          )
+          .subscribe(
+            (resp: any) => {
+              if (resp.ok) {
+                Swal.fire(
+                  'New product added!',
+                  `New Product ${productData.name}`,
+                  'success'
+                );
+
+                this.productForm.reset();
+                this.characteristic = {};
+                this.characteristicKeys = [];
+                this.image = undefined;
+                this.loadProducts();
+              } else {
+                Swal.fire('Opps', 'A error ocurrs', 'error');
+              }
+            },
+            (err) => {
+              Swal.fire('err', err.error.msg, 'error');
+            }
+          );
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire('Ocurrio un problema', 'Problema al subir la imagen', 'error');
+    }
   }
 
   logOut() {

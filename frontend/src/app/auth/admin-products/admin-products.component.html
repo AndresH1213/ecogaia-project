@@ -11,145 +11,113 @@
     <div class="row">
         <div class="col-7">
 
-        <p-card>
-            <div class="row">
-                <h3 class="title">Select product for <b>update</b> it</h3>
-            </div>
-            <div class="row">
-                <select name="productList" 
-                        class="form-control product-selector" 
-                        [(ngModel)]="selectedProductID" 
+            <p-card>
+                <div class="row">
+                    <h3 class="title">Select product for <b>update</b> it</h3>
+                </div>
+                <div class="row">
+                    <select name="productList" class="form-control product-selector" [(ngModel)]="selectedProductID"
                         (ngModelChange)="loadProductData($event)">
-                    <option value="">
-                        --- Select if wanna update ---
-                    </option>
-                    <option *ngFor="let product of products"
-                            [value]="product._id">{{ product.name }} </option>
-                </select>
-            </div>
-        </p-card>
+                        <option value="">
+                            --- Select if wanna update ---
+                        </option>
+                        <option *ngFor="let product of products" [value]="product._id">{{ product.name }} </option>
+                    </select>
+                </div>
+            </p-card>
 
-        <p-card>
-            <form [formGroup]="productForm">
-                <h5>Propiedades</h5>
-                <div class="p-grid p-fluid">
-                    <div class="p-col-12 p-md-4">
-                        <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon">Nombre Producto</span>
-                            <input type="text" pInputText placeholder="name" formControlName="name">         
-                            <span class="p-inputgroup-addon ms-2">Código</span>
-                            <input type="text" pInputText placeholder="Code" formControlName="code">         
+            <p-card>
+                <form [formGroup]="productForm">
+                    <h5>Propiedades</h5>
+                    <div class="p-grid p-fluid">
+                        <div class="p-col-12 p-md-4">
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon">Nombre Producto</span>
+                                <input type="text" pInputText placeholder="name" formControlName="name">
+                                <span class="p-inputgroup-addon ms-2">Código</span>
+                                <input type="text" pInputText placeholder="Code" formControlName="code">
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="p-col-12 p-md-4">
-                        <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon">$</span>
-                            <input type="number" pInputText placeholder="Price" formControlName="price">   
-                            <span class="p-inputgroup-addon">.00</span>      
+
+                        <div class="p-col-12 p-md-4">
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon">$</span>
+                                <input type="number" pInputText placeholder="Price" formControlName="price">
+                                <span class="p-inputgroup-addon">.00</span>
+                            </div>
                         </div>
-                    </div>
-                            
-                    <div class="p-col-12 p-md-4">
-                        <div class="p-inputgroup">
-                            <span class="p-inputgroup-addon" *ngIf="!inputFileImage">Image Url</span>
-                            <input  *ngIf="!inputFileImage"
-                                    type="text" 
-                                    pInputText placeholder="url" 
-                                    formControlName="image">
-                            <input  *ngIf="inputFileImage"
-                                    type="file"
-                                    style="width: 300px;" 
-                                    class="form-control file-input mt-1 ms-1"  
-                                    (change)="onImageChange($event.target)">      
-                            <button class="btn btn-outline-dark ms-1" 
-                                    type="button" 
-                                    (click)="showIputFileImage()"
-                                    [pTooltip]="tooltipImageStateText" 
-                                    tooltipPosition="top">{{ inputImageStateText }}</button>     
-                            
-                            <!-- update / add image  -->
-                            <div  class="ms-5"  *ngIf="selectedProduct">
-                                <button class="btn btn-outline-dark" 
-                                        type="button"
-                                        pTooltip="Add image to product" 
-                                        tooltipPosition="top"
-                                        (click)="uploadFileImage(false)">
-                                    <i class="uil uil-image-plus"></i>
-                                </button>
-                                <button class="btn btn-outline-dark ms-3" 
-                                        type="button"
-                                        pTooltip="Replace cover Image" 
-                                        tooltipPosition="top"
-                                        (click)="uploadFileImage(true)">
-                                    <i class="uil uil-image-edit"></i>
+
+                        <div class="p-col-12 p-md-4">
+                            <div class="p-inputgroup">
+                                <span class="p-inputgroup-addon">Image</span>
+                                <input id="image-input" type="file" style="width: 300px;"
+                                    class="form-control file-input mt-1 ms-1" (change)="onImageChange($event.target)">
+
+                                <!-- update / add image  -->
+                                <div class="ms-5" *ngIf="selectedProduct">
+                                    <button class="btn btn-outline-dark" type="button" pTooltip="Add image to product"
+                                        tooltipPosition="top" (click)="addFileImage()">
+                                        <i class="uil uil-image-plus"></i>
+                                    </button>
+                                    <button class="btn btn-outline-dark ms-3" type="button"
+                                        pTooltip="Replace cover Image" tooltipPosition="top"
+                                        (click)="addFileImage(true)">
+                                        <i class="uil uil-image-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-col-12 p-md-4">
+                            <div class="p-inputgroup">
+                                <button class="btn btn-light" type="button" (click)="addCharacteristic()"
+                                    pTooltip="Add new product's characteristic" tooltipPosition="top">Add</button>
+                                <input type="text" pInputText placeholder="characteristic"
+                                    formControlName="characteristicName">
+                                <input type="text" pInputText placeholder="value" formControlName="characteristicValue">
+                            </div>
+                        </div>
+
+                        <div *ngIf="showCharacteristics" class="card mb-1">
+                            <p class="card-title">Characteristicas disponibles</p>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item" *ngFor="let key of characteristicKeys">
+                                        <p class="btn btn-outline-dark mt-3" style="cursor: default;">
+                                            {{key}}
+                                        </p> | -- |
+                                        <span *ngFor="let property of characteristic[key]" style="cursor: default;"
+                                            class="btn btn-outline-info ms-4">{{property}} </span>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="p-col-6 p-md-6" *ngIf="selectedProduct">
+                            <div class="p-inputgroup" class="ms-4">
+                                <p-button label="Edit" type="button" (click)="edit()" [disabled]="!productForm.valid"
+                                    icon="pi pi-check"></p-button>
+                                &nbsp;
+                                <button type="button" class="float-end btn btn-danger" [disabled]="!selectedProductID"
+                                    (click)="deleteProduct()">
+                                    Delete
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="p-col-12 p-md-4">
-                        <div class="p-inputgroup">
-                            <button class="btn btn-light"  
-                                    type="button" 
-                                    (click)="addCharacteristic()"
-                                    pTooltip="Add new product's characteristic" 
-                                    tooltipPosition="top">Add</button>
-                            <input type="text" pInputText placeholder="characteristic" formControlName="characteristicName">      
-                            <input type="text" pInputText placeholder="value" formControlName="characteristicValue">      
+                        <div class="p-col-6 p-md-6" *ngIf="!selectedProduct">
+                            <div class="p-inputgroup" class="ms-4">
+                                <p-button label="Add Product" type="button" (click)="createProduct()"
+                                    [disabled]="!productForm.valid" icon="pi pi-check"></p-button>
+
+                            </div>
                         </div>
+
                     </div>
 
-                    <div *ngIf="showCharacteristics" class="card mb-1">
-                        <p class="card-title">Characteristicas disponibles</p>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item" *ngFor="let key of characteristicKeys">
-                                    <p class="btn btn-outline-dark mt-3" style="cursor: default;">
-                                        {{key}}
-                                    </p> | -- |
-                                    <span *ngFor="let property of characteristic[key]" style="cursor: default;"
-                                    class="btn btn-outline-info ms-4">{{property}} </span> 
-                                    
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="p-col-6 p-md-6" *ngIf="selectedProduct">
-                        <div class="p-inputgroup" class="ms-4">
-                            <p-button label="Edit" 
-                                      type="button" 
-                                      (click)="edit()"
-                                      [disabled]="!productForm.valid" 
-                                      icon="pi pi-check"
-                                      ></p-button>
-                                      &nbsp;
-                            <button type="button" 
-                                    class="float-end btn btn-danger" 
-                                    [disabled]="!selectedProductID"
-                                    (click)="deleteProduct()">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="p-col-6 p-md-6" *ngIf="!selectedProduct">
-                        <div class="p-inputgroup" class="ms-4">
-                            <p-button label="Add Product" 
-                                      type="button" 
-                                      (click)="createProduct()"
-                                      [disabled]="!productForm.valid" 
-                                      icon="pi pi-check"
-                                      ></p-button>
-
-                        </div>
-                    </div>
-
-                </div>
-
-            </form>
-        </p-card>
+                </form>
+            </p-card>
 
         </div>
         <div class="col">
