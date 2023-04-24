@@ -1,20 +1,12 @@
-const { v4: uuidv4 } =  require('uuid');
+const crypto = require('crypto');
 
-exports.processImage = (file, type) => {
-    
-    const nameSplit = file.name.split('.');
-    const extFile = nameSplit[nameSplit.length - 1];
-    // validate extension
-    const validExt = ['png','jpg','jpeg','gif','webp','JPG'];
-    if (!validExt.includes(extFile)) {
-        throw new Error('No se acepta ese formato de foto')
-    }
+exports.processImage = (name, mime) => {
+  const [_, format] = mime.split('/');
+  // validate extension
+  const validExt = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
+  if (!validExt.includes(format?.toLowerCase())) {
+    return false;
+  }
 
-    // Generate the file name
-    const filename = `${uuidv4()}.${extFile}`;
-
-    // Path to save the image
-    const path = `./uploads/${type}/${filename}`;
-
-    return [path, filename]
-}
+  return crypto.randomBytes(2).toString('hex') + '_' + name;
+};

@@ -1,16 +1,15 @@
-FROM node:16
+FROM node:14.17.4-alpine3.14
 
-RUN mkdir -p /src/app
+ENV NODE_ENV production
 
-WORKDIR /usr/app
+WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY --chown=node:node package*.json /usr/src/app/
 
-RUN npm install
+RUN npm ci --only=production
 
-COPY . .
+COPY --chown=node:node . /usr/src/app/
 
 EXPOSE 80
-EXPOSE 3000
 
 CMD ["npm", "start"]

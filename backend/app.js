@@ -45,6 +45,11 @@ app.use('/api/products', productRoutes);
 app.use('/api/combos', combosRoutes);
 app.use('/api/shop', shopRoutes);
 
+// path for health checks
+app.use('/', (req, res) => {
+  res.status(200);
+  res.send('ok');
+});
 // app.get('*', (req, res) => {
 //   res.sendFile(path.resolve(__dirname, 'public/index.html'));
 // });
@@ -61,7 +66,7 @@ const start = async () => {
   try {
     // connect to DB
     await connectDB(process.env.MONGO_URI);
-    app.listen(port, console.log(`Server listen in port ${port}...`));
+    app.listen(port, console.log(`Server listening in port ${port}...`));
   } catch (err) {
     console.log(err, 'Ocurrio un error por favor comuniquese con el administrador');
   }
